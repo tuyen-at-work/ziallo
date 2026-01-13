@@ -88,7 +88,7 @@ expression: "generate_css(&theme, \"g-\")"
 .M.R.g-import { color: #DBD7CACC; }
 .R.T.g-java { color: #DBD7CACC; }
 .d.p.s { color: #C98A7D77; }
-.g-key.m.o_ { color: #B8A965; }
+._k.m.o_ { color: #B8A965; }
 .A.O.e { color: #BD976A; }
 .S.T._P { color: #5DA994; }
 .T.e.n { color: #5DA994; }
@@ -101,10 +101,10 @@ expression: "generate_css(&theme, \"g-\")"
 ._D._r.m { color: #B392F0; font-weight: bold; }
 ._D.h.m { color: #79B8FF; }
 .L.O.s { color: #C98A7D; }
-.C.g-character.g-escape { color: #C98A7D; }
+.C.C_._e { color: #C98A7D; }
 .E_.X.g-ruby { color: #C98A7D; }
 .g-arbitrary-repitition.r.s { color: #C98A7D; }
-.C.g-character.g-escape { color: #E6CC77; }
+.C.C_._e { color: #E6CC77; }
 .I.g-character-not-allowed-here.h- { color: #444444; }
 .T.g-annotation.k.o { color: #444444; }
 .E_.g-block.g-github-actions-expression.m { color: #444444; }

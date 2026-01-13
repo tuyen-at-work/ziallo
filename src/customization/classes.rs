@@ -99,9 +99,14 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "url" => "_U",
 
         // Lowercase underscore shortcuts
+        "anchor" => "_a",
         "class" => "_c",
         "deleted" => "_d",
+        "escape" => "_e",
+        "font-name" => "_f",
         "inserted" => "_i",
+        "key" => "_k",
+        "logical" => "_l",
         "markup" => "_m",
         "component" => "_p",
         "object" => "_o",
@@ -109,9 +114,12 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "typeparameters" => "_t",
 
         // Uppercase suffix underscore shortcuts
+        "character" => "C_",
         "deprecated" => "D_",
         "embedded" => "E_",
+        "pseudo-element" => "O_",
         "percentage" => "P_",
+        "preprocessor" => "R_",
         "section" => "S_",
 
         // Lowercase suffix underscore shortcuts

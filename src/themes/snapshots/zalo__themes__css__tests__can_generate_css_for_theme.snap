@@ -79,7 +79,7 @@ expression: "generate_css(&theme, \"g-\")"
 .f.p_.v { color: #DBD7CACC; }
 .e.n.t { color: #4D9375; }
 .e.f.n { color: #80A665; }
-.d.g-template-expression.p { color: #4D9375; }
+.d.p.t_ { color: #4D9375; }
 .B.S.T { color: #CB7676; }
 .C.g-undefined.l { color: #CB7676; }
 .C.g-null.l { color: #CB7676; }
@@ -88,7 +88,7 @@ expression: "generate_css(&theme, \"g-\")"
 .M.R.g-import { color: #DBD7CACC; }
 .R.T.g-java { color: #DBD7CACC; }
 .d.p.s { color: #C98A7D77; }
-.g-key.g-object-literal.m { color: #B8A965; }
+.g-key.m.o_ { color: #B8A965; }
 .A.O.e { color: #BD976A; }
 .S.T._P { color: #5DA994; }
 .T.e.n { color: #5DA994; }
@@ -102,12 +102,12 @@ expression: "generate_css(&theme, \"g-\")"
 ._D.h.m { color: #79B8FF; }
 .L.O.s { color: #C98A7D; }
 .C.g-character.g-escape { color: #C98A7D; }
-.X.g-embedded.g-ruby { color: #C98A7D; }
+.E_.X.g-ruby { color: #C98A7D; }
 .g-arbitrary-repitition.r.s { color: #C98A7D; }
 .C.g-character.g-escape { color: #E6CC77; }
 .I.g-character-not-allowed-here.h- { color: #444444; }
 .T.g-annotation.k.o { color: #444444; }
-.g-block.g-embedded.g-github-actions-expression.m { color: #444444; }
+.E_.g-block.g-github-actions-expression.m { color: #444444; }
 .R.T.a_.f { color: #444444; }
 .R.T._c.g-jsdoc { color: #4D9375; }
 .C.g-import-export-all.g-ts.l { color: #CB7676; }

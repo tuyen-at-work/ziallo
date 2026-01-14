@@ -95,6 +95,8 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "character-class" => "_C",
         "diff" => "_D",
         "end" => "_E",
+        "id" => "_I",
+        "or" => "_O",
         "primitive" => "_P",
         "url" => "_U",
 
@@ -142,6 +144,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "rgb-value" => "r_",
         "single" => "s_",
         "template-expression" => "t_",
+        "vendored" => "v_",
 
         // Languages uppercase
         "js" | "javascript" => "J-",

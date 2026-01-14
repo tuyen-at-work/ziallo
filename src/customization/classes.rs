@@ -49,8 +49,8 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "modifier" => "M",
         "numeric" => "N",
         "other" => "O",
-        "property" => "P",
-        "quarto" => "Q",
+        "parenthesis" => "P",
+        "quantifier" => "Q",
         "storage" => "R",
         "support" => "S",
         "type" => "T",
@@ -85,7 +85,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "unit" => "u",
         "variable" => "v",
         "readwrite" => "w",
-        // x
+        "xml" => "x",
         "directive" => "y",
         // z    /// RESERVED
 
@@ -111,13 +111,16 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "component" => "_p",
         "object" => "_o",
         "range" => "_r",
+        "set" => "_s",
         "typeparameters" => "_t",
 
         // Uppercase suffix underscore shortcuts
         "character" => "C_",
         "deprecated" => "D_",
         "embedded" => "E_",
+        "member" => "M_",
         "pseudo-element" => "O_",
+        "option" => "O_",
         "percentage" => "P_",
         "preprocessor" => "R_",
         "section" => "S_",
@@ -128,6 +131,8 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "double" => "d_",
         "expression" => "e_",
         "inherited-class" => "i_",
+        "media" => "m_",
+        "namespace" => "n_",
         "object-literal" => "o_",
         "parameter" => "p_",
         "rgb-value" => "r_",
@@ -144,6 +149,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "html" => "h-",
         "ini" => "i-",
         "json" => "j-",
+        "python" => "p-",
         "tsx" => "t-",
         "yml" | "yaml" => "y-",
         "vue" => "v-",

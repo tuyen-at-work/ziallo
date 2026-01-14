@@ -15,10 +15,10 @@ expression: "generate_css(&theme, \"g-\")"
 .R { color: #CB7676; }
 .s { color: #C98A7D; }
 .S { color: #B8A965; }
-.P { color: #B8A965; }
+.g-property { color: #B8A965; }
 .v { color: #BD976A; }
 .i { color: #BD976A; }
-.g-namespace { color: #DB889A; }
+.n_ { color: #DB889A; }
 .g-carriage-return { color: #24292E; background-color: #F97583; font-style: italic;text-decoration: underline; }
 .g-number { color: #4C9A91; }
 .v { color: #C98A7D; }
@@ -115,7 +115,7 @@ expression: "generate_css(&theme, \"g-\")"
 .e.n.t.y- { color: #B8A965; }
 ._A.g-compound.k.o { color: #CB7676; }
 .g-expr.g-ts.g-var.m { color: #CB7676; }
-.g-quantifier.k.o.r { color: #4C9A91; }
+.Q.k.o.r { color: #4C9A91; }
 ._D.g-from-file.h.m { color: #FDAEB7; background-color: #86181D; }
 ._D.g-to-file.h.m { color: #85E89D; background-color: #144620; }
 .C.L.O.g-reference { color: #C98A7D; }

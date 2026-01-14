@@ -30,9 +30,9 @@ expression: "generate_css(&theme, \"g-\")"
 .e.n { color: #80A665; }
 .H.t { color: #4D9375; }
 .R.T { color: #CB7676; }
-.V.a { color: #C98A7D; }
+.V._a { color: #C98A7D; }
 .J.m { color: #B8A965; }
-.a.n { color: #B8A965; }
+._a.n { color: #B8A965; }
 .k.o { color: #CB7676; }
 .I.g-broken { color: #FDAEB7; font-style: italic; }
 .D_.I { color: #FDAEB7; font-style: italic; }
@@ -89,7 +89,7 @@ expression: "generate_css(&theme, \"g-\")"
 .R.T.g-java { color: #DBD7CACC; }
 .d.p.s { color: #C98A7D77; }
 ._k.m.o_ { color: #B8A965; }
-.A.O.e { color: #BD976A; }
+.O.a.e { color: #BD976A; }
 .S.T._P { color: #5DA994; }
 .T.e.n { color: #5DA994; }
 ._C.r.s { color: #C98A7D; }
@@ -128,8 +128,8 @@ expression: "generate_css(&theme, \"g-\")"
 ._B.d.g-markdown.p.s { color: #C98A7D; }
 ._E.d.g-markdown.p.s { color: #C98A7D; }
 .L._m.g-image.g-markdown.g-underline { color: #DEDCD590; text-decoration: underline; }
-.A.H.O.e.v- { color: #80A665; }
+.H.O.a.e.v- { color: #80A665; }
 .H.g-input.g-structure.g-void.m.t { color: #444444; }
 .H._B.d.p.s.v- { color: #444444; }
 .H._E.d.p.s.v- { color: #444444; }
-.A.D_.H.I.O.e { color: #BD976A; }
+.D_.H.I.O.a.e { color: #BD976A; }

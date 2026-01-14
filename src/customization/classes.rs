@@ -34,7 +34,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
 
     let identifier = match identifier {
         // Uppercase single-letter shortcuts
-        "attribute-name" => "A",
+        "anchor" => "A",
         "builtin" => "B",
         "constant" => "C",
         "delimiter" => "D",
@@ -62,7 +62,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "separator" => "Z",
 
         // Lowercase single-letter shortcuts
-        "attribute" => "a",
+        "attribute-name" => "a",
         "boolean" => "b",
         "comment" => "c",
         "definition" => "d",
@@ -99,7 +99,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "url" => "_U",
 
         // Lowercase underscore shortcuts
-        "anchor" => "_a",
+        "attribute" => "_a",
         "class" => "_c",
         "deleted" => "_d",
         "escape" => "_e",
@@ -108,6 +108,7 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "key" => "_k",
         "logical" => "_l",
         "markup" => "_m",
+        "negation" => "_n",
         "component" => "_p",
         "object" => "_o",
         "range" => "_r",
@@ -125,6 +126,8 @@ pub fn shorten_identifier(identifier: &str, prefix: &str) -> String {
         "percentage" => "P_",
         "preprocessor" => "R_",
         "section" => "S_",
+        "property-value" => "V_",
+        "pseudo-class" => "X_",
 
         // Lowercase suffix underscore shortcuts
         "arrow" => "a_",

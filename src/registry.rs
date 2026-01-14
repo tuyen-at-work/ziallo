@@ -133,6 +133,20 @@ pub struct Registry {
 }
 
 impl Registry {
+    /// Sets the identifier shortener function for the registry.
+    pub fn set_shortener(&mut self, shortener: IdentifierShortener) -> &Self {
+        self.shortener = Some(shortener);
+
+        self
+    }
+
+    /// Sets the language normalizer function for the registry.
+    pub fn set_normalizer(&mut self, normalizer: LanguageNormalizer) -> &Self {
+        self.normalizer = Some(normalizer);
+
+        self
+    }
+
     fn add_grammar_from_raw(&mut self, raw_grammar: RawGrammar) -> ZaloResult<()> {
         if self.linked && self.grammar_id_by_name.contains_key(&raw_grammar.name) {
             return Err(Error::ReplacingGrammarPostLinking(

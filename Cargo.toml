@@ -1,6 +1,6 @@
 [package]
 name = "zalo"
-version = "0.2.40"
+version = "0.2.41"
 edition = "2024"
 license = "EUPL-1.2"
 description = "A code highlighter giving the same output as VSCode"

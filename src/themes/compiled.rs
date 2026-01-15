@@ -158,6 +158,17 @@ pub struct CompiledTheme {
     pub(crate) rules: Vec<CompiledThemeRule>,
 }
 
+/// Summarized theme information for listings
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SummarizedTheme {
+    /// Theme ID
+    pub id: String,
+    /// Theme name
+    pub name: String,
+    /// Is dark theme
+    pub dark: bool,
+}
+
 impl CompiledTheme {
     pub(crate) fn from_raw_theme(raw_theme: RawTheme) -> ZaloResult<Self> {
         let theme_type = raw_theme

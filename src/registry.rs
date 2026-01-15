@@ -14,6 +14,7 @@ use crate::highlight::{HighlightedText, Highlighter, MergingOptions};
 use crate::scope::Scope;
 #[cfg(feature = "dump")]
 use crate::scope::ScopeRepository;
+use crate::themes::compiled::{SummarizedTheme, ThemeType};
 use crate::themes::{CompiledTheme, RawTheme, ThemeVariant};
 use crate::tokenizer::{Token, Tokenizer};
 
@@ -237,8 +238,18 @@ impl Registry {
     }
 
     /// Get all themes
-    pub fn get_all_themes(&self) -> ZaloResult<HashMap<String, CompiledTheme>> {
-        Ok(self.themes.clone())
+    pub fn get_all_themes(&self) -> ZaloResult<Vec<SummarizedTheme>> {
+        let themes = self
+            .themes
+            .iter()
+            .map(|(k, v)| SummarizedTheme {
+                id: k.clone(),
+                name: v.name.clone(),
+                dark: v.theme_type == ThemeType::Dark,
+            })
+            .collect();
+
+        Ok(themes)
     }
 
     /// Get all available themes

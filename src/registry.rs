@@ -236,6 +236,11 @@ impl Registry {
         Ok(css_map)
     }
 
+    /// Get all themes
+    pub fn get_all_themes(&self) -> ZaloResult<HashMap<String, CompiledTheme>> {
+        Ok(self.themes.clone())
+    }
+
     /// Get all available themes
     pub fn get_theme_names(&self) -> ZaloResult<Vec<String>> {
         Ok(self.themes.keys().cloned().collect())

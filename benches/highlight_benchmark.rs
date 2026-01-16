@@ -1,6 +1,6 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use giallo::{HighlightOptions, Registry, ThemeVariant};
 use std::fs;
+use zalo::{HighlightOptions, Registry, ThemeVariant};
 
 fn highlight_jquery_benchmark(c: &mut Criterion) {
     // Load registry once for all benchmarks

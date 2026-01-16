@@ -1,9 +1,9 @@
-use giallo::GIALLO_CSS;
 use std::env;
 use std::fs;
+use zalo::ZALO_CSS;
 
-use giallo::{HighlightOptions, Registry, ThemeVariant};
-use giallo::{HtmlRenderer, RenderOptions};
+use zalo::{HighlightOptions, Registry, ThemeVariant};
+use zalo::{HtmlRenderer, RenderOptions};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
@@ -54,7 +54,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     html {{
         font-size: 16px;
     }}
-    {GIALLO_CSS}
+    {ZALO_CSS}
     </style>
 </head>
 <body>

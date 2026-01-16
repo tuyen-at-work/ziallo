@@ -8,8 +8,8 @@ pub(crate) mod selector;
 use serde::{Deserialize, Serialize};
 
 pub use color::Color;
-pub use compiled::{CompiledTheme, Style};
-pub(crate) use css::scope_to_css_selector;
+pub use compiled::{CompiledTheme, Style, SummarizedTheme};
+pub(crate) use css::scope_to_css_classes;
 pub use font_style::FontStyle;
 pub use raw::RawTheme;
 

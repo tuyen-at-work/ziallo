@@ -1,10 +1,10 @@
 [package]
-name = "giallo"
-version = "0.2.1"
+name = "zalo"
+version = "0.2.46"
 edition = "2024"
 license = "EUPL-1.2"
 description = "A code highlighter giving the same output as VSCode"
-repository = "https://github.com/getzola/giallo"
+repository = "https://github.com/tuyen-at-work/zalo"
 
 include = [
     "src/**/*.rs",

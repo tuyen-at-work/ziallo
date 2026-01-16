@@ -1,3 +1,4 @@
+use crate::customization::normalize_language;
 use crate::registry::HighlightedCode;
 use crate::renderers::RenderOptions;
 use crate::themes::{Color, ThemeVariant};
@@ -13,13 +14,25 @@ pub struct HtmlRenderer {
     /// The value is the class prefix (e.g., "g-" produces classes like "g-keyword").
     /// Generate corresponding CSS stylesheets using `Registry::generate_css`.
     pub css_class_prefix: Option<String>,
+    /// Classes to add to the code block
+    pub classes: Vec<String>,
+    /// The prefix HTML to add before the code block
+    pub prefix_html: Option<&'static str>,
+    /// The suffix HTML to add after the code block
+    pub suffix_html: Option<&'static str>,
 }
 
 impl HtmlRenderer {
     /// Renders the given highlighted code to an HTML string.
     /// This will also handle automatic light/dark theming and escaping characters.
     pub fn render(&self, highlighted: &HighlightedCode, options: &RenderOptions) -> String {
-        let lang = highlighted.language;
+        let prefix_html = self.prefix_html.unwrap_or("");
+        let suffix_html = self.suffix_html.unwrap_or("");
+        let lang = if let Some(normalizer) = highlighted.normalizer {
+            normalizer(highlighted.language)
+        } else {
+            normalize_language(highlighted.language)
+        };
         let css_prefix = self.css_class_prefix.as_deref();
 
         // Pre-compute highlight background CSS/class if available
@@ -99,7 +112,7 @@ impl HtmlRenderer {
             let display_line_num = options.line_number_start + (idx as isize);
             let line_number_html = if options.show_line_numbers {
                 format!(
-                    r#"<span aria-hidden="true" class="giallo-ln"{}>{display_line_num}</span>"#,
+                    r#"<span aria-hidden="true" class="z-ln"{}>{display_line_num}</span>"#,
                     line_number_style.as_deref().unwrap_or_default()
                 )
             } else {
@@ -114,7 +127,7 @@ impl HtmlRenderer {
             let line_html = match (is_highlighted, &highlight_attr) {
                 (true, Some(hl_class_or_style)) => {
                     format!(
-                        r#"<span class="giallo-l{hl_class_or_style}"{hl_style}>{line_number_html}{line_content}</span>"#,
+                        r#"<span class="z-l{hl_class_or_style}"{hl_style}>{line_number_html}{line_content}</span>"#,
                         hl_class_or_style = if let Some(p) = css_prefix {
                             format!(" {p}hl")
                         } else {
@@ -127,7 +140,7 @@ impl HtmlRenderer {
                         }
                     )
                 }
-                _ => format!(r#"<span class="giallo-l">{line_number_html}{line_content}</span>"#),
+                _ => format!(r#"<span class="z-l">{line_number_html}{line_content}</span>"#),
             };
 
             lines.push(line_html);
@@ -152,10 +165,22 @@ impl HtmlRenderer {
             data_attrs.push_str(&format!(r#" data-{slugified_key}="{value}""#));
         }
 
-        // CSS class mode: output class instead of inline styles on <pre>
+        let mut classes = format!("language-{lang}");
+        for class in &self.classes {
+            classes.push(' ');
+            classes.push_str(class);
+        }
+
         if let Some(prefix) = css_prefix {
+            classes.push(' ');
+            classes.push_str(prefix);
+            classes.push_str("code");
+        }
+
+        // CSS class mode: output class instead of inline styles on <pre>
+        if css_prefix.is_some() {
             return format!(
-                r#"<pre class="giallo {prefix}code"><code {data_attrs}>{lines}</code></pre>"#
+                "{prefix_html}<pre tabindex=\"0\" {data_attrs} class=\"{classes}\"><code {data_attrs} class=\"{classes}\">{lines}</code></pre>{suffix_html}\n"
             );
         }
 
@@ -165,7 +190,7 @@ impl HtmlRenderer {
                 let fg = theme.default_style.foreground.as_css_color_property();
                 let bg = theme.default_style.background.as_css_bg_color_property();
                 format!(
-                    r#"<pre class="giallo" style="{fg} {bg}"><code {data_attrs}>{lines}</code></pre>"#
+                    "{prefix_html}<pre tabindex=\"0\" class=\"{classes}\" style=\"{fg} {bg}\"><code {data_attrs} class=\"{classes}\">{lines}</code></pre>{suffix_html}\n",
                 )
             }
             ThemeVariant::Dual { light, dark } => {
@@ -178,7 +203,7 @@ impl HtmlRenderer {
                     &dark.default_style.background,
                 );
                 format!(
-                    r#"<pre class="giallo" style="color-scheme: light dark; {fg} {bg}"><code {data_attrs}>{lines}</code></pre>"#
+                    "{prefix_html}<pre tabindex=\"0\" class=\"{classes}\" style=\"color-scheme: light dark; {fg} {bg}\"><code {data_attrs} class=\"{classes}\">{lines}</code></pre>{suffix_html}\n"
                 )
             }
         }
@@ -248,6 +273,9 @@ mod tests {
         let html = HtmlRenderer {
             other_metadata,
             css_class_prefix: None,
+            classes: Vec::new(),
+            prefix_html: Some(r#"<div class="t-code-block">"#),
+            suffix_html: Some("</div>"),
         }
         .render(&highlighted, &render_options);
         insta::assert_snapshot!(html);

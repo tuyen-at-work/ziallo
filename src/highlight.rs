@@ -4,13 +4,14 @@ use std::ops::Range;
 
 use serde::{Deserialize, Serialize};
 
+use crate::customization::{self, IdentifierShortener};
 use crate::renderers::html::HtmlEscaped;
 use crate::scope::Scope;
 use crate::themes::compiled::ThemeType;
-use crate::themes::{Color, CompiledTheme, Style, ThemeVariant, scope_to_css_selector};
+use crate::themes::{Color, CompiledTheme, Style, ThemeVariant, scope_to_css_classes};
 use crate::tokenizer::Token;
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 /// A token with associated styling information
 pub struct HighlightedText {
     /// The text from the input string for that specific token
@@ -21,6 +22,15 @@ pub struct HighlightedText {
     /// The scope stack that contributed to the style for this text, for all styles
     /// Only used if the user requested HTML classes
     pub(crate) scopes: Vec<Scope>,
+    /// Optional identifier shortener to use when generating CSS classes
+    #[serde(skip)]
+    pub shortener: Option<IdentifierShortener>,
+}
+
+impl PartialEq for HighlightedText {
+    fn eq(&self, other: &Self) -> bool {
+        self.text == other.text && self.style == other.style && self.scopes == other.scopes
+    }
 }
 
 impl HighlightedText {
@@ -94,6 +104,7 @@ impl HighlightedText {
         theme: &ThemeVariant<&CompiledTheme>,
         css_class_prefix: Option<&str>,
     ) -> String {
+        let shortener = self.shortener.unwrap_or(customization::shorten_identifier);
         let escaped = HtmlEscaped(self.text.as_str());
 
         // CSS class mode
@@ -101,11 +112,15 @@ impl HighlightedText {
             if self.scopes.is_empty() {
                 return format!("<span>{escaped}</span>");
             }
-            let css_classes: Vec<String> = self
+            let mut css_classes: Vec<String> = self
                 .scopes
                 .iter()
-                .map(|scope| scope_to_css_selector(*scope, prefix, true))
+                .flat_map(|scope| scope_to_css_classes(*scope, prefix, shortener))
                 .collect();
+
+            css_classes.sort();
+            css_classes.dedup();
+
             return format!(
                 r#"<span class="{}">{escaped}</span>"#,
                 css_classes.join(" ").trim(),
@@ -205,22 +220,29 @@ pub(crate) struct Highlighter<'r> {
     // Separate cache per theme (max 2)
     // token stack -> (style, contributing theme scope)
     cache: [HashMap<Vec<Scope>, (Style, Vec<Scope>)>; 2],
+    shortener: Option<IdentifierShortener>,
 }
 
 impl<'r> Highlighter<'r> {
     /// Create a new highlighter from a compiled theme
-    pub(crate) fn new(theme: &'r CompiledTheme) -> Self {
+    pub(crate) fn new(theme: &'r CompiledTheme, shortener: Option<IdentifierShortener>) -> Self {
         Highlighter {
             themes: vec![theme],
             cache: [HashMap::new(), HashMap::new()],
+            shortener,
         }
     }
 
     /// Create a new highlighter for dual themes (light and dark)
-    pub(crate) fn new_dual(light_theme: &'r CompiledTheme, dark_theme: &'r CompiledTheme) -> Self {
+    pub(crate) fn new_dual(
+        light_theme: &'r CompiledTheme,
+        dark_theme: &'r CompiledTheme,
+        shortener: Option<IdentifierShortener>,
+    ) -> Self {
         Highlighter {
             themes: vec![light_theme, dark_theme],
             cache: [HashMap::new(), HashMap::new()],
+            shortener,
         }
     }
 
@@ -435,6 +457,7 @@ impl<'r> Highlighter<'r> {
                         style,
                         text: line[span].to_string(),
                         scopes,
+                        shortener: self.shortener,
                     })
                     .collect(),
             );
@@ -508,7 +531,8 @@ mod tests {
     #[test]
     fn test_match_scopes() {
         let test_theme = test_theme();
-        let mut highlighter = Highlighter::new(&test_theme);
+        let mut highlighter =
+            Highlighter::new(&test_theme, Some(customization::shorten_identifier));
 
         // Test matching scopes
         let (ThemeVariant::Single(comment_style), comment_scopes) =
@@ -541,7 +565,8 @@ mod tests {
     #[test]
     fn test_highlight_tokens() {
         let test_theme = test_theme();
-        let mut highlighter = Highlighter::new(&test_theme);
+        let mut highlighter =
+            Highlighter::new(&test_theme, Some(customization::shorten_identifier));
         let tokens = vec![
             vec![token(0, 2, "keyword"), token(3, 8, "unknown")],
             vec![token(0, 2, "comment")],
@@ -641,7 +666,8 @@ mod tests {
 
         // Compile using proper pipeline (automatically sorts by specificity)
         let inheritance_theme = CompiledTheme::from_raw_theme(raw_theme).unwrap();
-        let mut highlighter = Highlighter::new(&inheritance_theme);
+        let mut highlighter =
+            Highlighter::new(&inheritance_theme, Some(customization::shorten_identifier));
 
         // Test: constant should get its own values
         let (ThemeVariant::Single(style), _scopes) = highlighter.match_scopes(&[scope("constant")])
@@ -679,7 +705,8 @@ mod tests {
             PathBuf::from("grammars-themes/packages/tm-themes/themes/vitesse-black.json");
         let raw_theme = RawTheme::load_from_file(theme_path).unwrap();
         let compiled_theme = CompiledTheme::from_raw_theme(raw_theme).unwrap();
-        let mut highlighter = Highlighter::new(&compiled_theme);
+        let mut highlighter =
+            Highlighter::new(&compiled_theme, Some(customization::shorten_identifier));
 
         // Test real tokenizer output from ASP.NET Core Razor with invalid HTML tag
         // Token 1: '<' - HTML tag begin punctuation
@@ -767,6 +794,7 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(test_theme.default_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @"<span>hello</span>");
@@ -779,6 +807,7 @@ mod tests {
             text: "<script></script>".to_string(),
             style: ThemeVariant::Single(test_theme.default_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @"<span>&lt;script&gt;&lt;/script&gt;</span>");
@@ -796,6 +825,7 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(custom_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @r#"<span style="color: #FFFF00;">hello</span>"#);
@@ -813,6 +843,7 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(custom_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @r#"<span style="background-color: #FFFF00;">hello</span>"#);
@@ -830,6 +861,7 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(custom_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @r#"<span style="font-style: italic;">hello</span>"#);
@@ -847,6 +879,7 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(custom_style),
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), None);
         insta::assert_snapshot!(res, @r#"<span style="color: #FFFF00;background-color: #FFFF00;font-style: italic;">hello</span>"#);
@@ -863,6 +896,7 @@ mod tests {
                 dark: dark.default_style,
             },
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(
             &ThemeVariant::Dual {
@@ -891,6 +925,7 @@ mod tests {
                 },
             },
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(
             &ThemeVariant::Dual {
@@ -919,6 +954,7 @@ mod tests {
                 },
             },
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(
             &ThemeVariant::Dual {
@@ -949,6 +985,7 @@ mod tests {
                 },
             },
             scopes: Vec::new(),
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(
             &ThemeVariant::Dual {
@@ -967,8 +1004,9 @@ mod tests {
             text: "hello".to_string(),
             style: ThemeVariant::Single(test_theme.default_style),
             scopes: vec![scope("keyword"), scope("keyword.control")],
+            shortener: Some(customization::shorten_identifier),
         };
         let res = ht.as_html(&ThemeVariant::Single(&test_theme), Some("g-"));
-        insta::assert_snapshot!(res, @r#"<span class="g-keyword g-keyword g-control">hello</span>"#);
+        insta::assert_snapshot!(res, @r#"<span class="G k">hello</span>"#);
     }
 }

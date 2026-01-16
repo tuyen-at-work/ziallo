@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{Error, GialloResult};
+use crate::error::{Error, ZaloResult};
 
 /// RGBA color with 8-bit components
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug)]
@@ -11,7 +11,7 @@ pub struct Color {
     pub(crate) a: u8,
 }
 
-fn parse_hex_component(hex: &str, original: &str) -> GialloResult<u8> {
+fn parse_hex_component(hex: &str, original: &str) -> ZaloResult<u8> {
     u8::from_str_radix(hex, 16).map_err(|_| Error::InvalidHexColor {
         value: original.to_string(),
         reason: format!("invalid hex component '{}'", hex),
@@ -79,7 +79,7 @@ impl Color {
     /// Creates a Color from a string (in theory a hex but it can also be black/white).
     ///
     /// Errors if the string is not a valid hex colour.
-    pub fn from_hex(hex: &str) -> GialloResult<Self> {
+    pub fn from_hex(hex: &str) -> ZaloResult<Self> {
         let original = hex;
         let hex = hex.trim_start_matches('#');
 

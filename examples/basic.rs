@@ -1,4 +1,4 @@
-use giallo::{HighlightOptions, HtmlRenderer, Registry, RenderOptions, ThemeVariant};
+use zalo::{HighlightOptions, HtmlRenderer, Registry, RenderOptions, ThemeVariant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Load the pre-built registry

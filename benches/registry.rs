@@ -1,5 +1,5 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use giallo::Registry;
+use zalo::Registry;
 
 fn registry_benchmark(c: &mut Criterion) {
     c.bench_function("registry load from file", |b| {

@@ -1,4 +1,4 @@
-use giallo::{FontStyle, HighlightOptions, HighlightedCode, Registry, ThemeVariant};
+use zalo::{FontStyle, HighlightOptions, HighlightedCode, Registry, ThemeVariant};
 
 fn render_html(highlighted: &HighlightedCode) -> String {
     let ThemeVariant::Single(theme) = &highlighted.theme else {

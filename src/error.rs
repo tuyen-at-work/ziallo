@@ -1,9 +1,9 @@
 use std::fmt;
 use std::io;
 
-pub(crate) type GialloResult<T> = Result<T, Error>;
+pub(crate) type ZaloResult<T> = Result<T, Error>;
 
-/// Errors that can occur during giallo usage
+/// Errors that can occur during zalo usage
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum Error {

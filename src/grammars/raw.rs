@@ -5,7 +5,7 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
-use crate::error::GialloResult;
+use crate::error::ZaloResult;
 
 /// per vscode-textmate:
 ///  Allowed values:
@@ -267,7 +267,7 @@ pub struct RawGrammar {
 }
 
 impl RawGrammar {
-    pub fn load_from_file<P: AsRef<Path>>(path: P) -> GialloResult<Self> {
+    pub fn load_from_file<P: AsRef<Path>>(path: P) -> ZaloResult<Self> {
         let file = File::open(&path)?;
         let raw_grammar = serde_json::from_reader(&file)?;
         Ok(raw_grammar)

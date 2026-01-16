@@ -1,5 +1,5 @@
-use giallo::{HighlightOptions, HtmlRenderer, Registry, RenderOptions, ThemeVariant};
 use std::fs;
+use zalo::{HighlightOptions, HtmlRenderer, Registry, RenderOptions, ThemeVariant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut registry = Registry::load_from_file("builtin.msgpack")?;
@@ -52,7 +52,7 @@ console.log(`Fibonacci(10) = ${result}`);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giallo CSS Classes Demo</title>
+    <title>Zalo CSS Classes Demo</title>
     <link id="light-css" rel="stylesheet" href="light.css" media="(prefers-color-scheme: light)">
     <link id="dark-css" rel="stylesheet" href="dark.css" media="(prefers-color-scheme: dark)">
     <style>
@@ -101,18 +101,18 @@ console.log(`Fibonacci(10) = ${result}`);
         button:hover {{
             background-color: #6d28d9;
         }}
-        pre.giallo {{
+        pre.zalo {{
             border-radius: 0.5rem;
             padding: 1rem 0;
             overflow-x: auto;
             border: 4px solid #7c7f93;
             font-size: 16px;
         }}
-        {giallo_css}
+        {zalo_css}
     </style>
 </head>
 <body>
-    <h1>Giallo CSS Classes Demo</h1>
+    <h1>Zalo CSS Classes Demo</h1>
     <div class="controls">
         <button onclick="toggleTheme()">Toggle Light/Dark</button>
         <span id="current-theme"></span>
@@ -168,7 +168,7 @@ console.log(`Fibonacci(10) = ${result}`);
 </body>
 </html>
 "#,
-        giallo_css = giallo::GIALLO_CSS,
+        zalo_css = zalo::ZALO_CSS,
         html_code = html_code
     );
 

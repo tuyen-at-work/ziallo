@@ -1,5 +1,5 @@
-use giallo::{HighlightOptions, Registry, ThemeVariant};
 use std::fs;
+use zalo::{HighlightOptions, Registry, ThemeVariant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut registry = Registry::load_from_file("builtin.msgpack")?;

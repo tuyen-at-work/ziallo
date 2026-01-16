@@ -1,8 +1,8 @@
 use std::env;
 use std::fs;
 
-use giallo::{HighlightOptions, Registry, ThemeVariant};
-use giallo::{RenderOptions, TerminalRenderer};
+use zalo::{HighlightOptions, Registry, ThemeVariant};
+use zalo::{RenderOptions, TerminalRenderer};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();

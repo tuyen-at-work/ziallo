@@ -1,4 +1,4 @@
-# Giallo
+# Zalo
 
 A Rust syntax highlighting library using TextMate grammars and themes, producing the same output as VSCode.
 
@@ -9,7 +9,7 @@ starting kit and testing, but you can start from an empty canvas if you want.
 
 ```toml
 [dependencies]
-giallo = { version = "0.2.0", features = ["dump"] }
+zalo = { version = "0.2.0", features = ["dump"] }
 ```
 
 The `dump` feature is required to use `Registry::builtin()` or create/load your own dump. The dump is not tracked
@@ -17,13 +17,13 @@ in git since it might change frequently, and is generated in the CI release scri
 
 The dump is currently 1.72MB compressed MessagePack file.
 
-Giallo currently uses a fork of [rust-onig](https://github.com/rust-onig/rust-onig). Once <https://github.com/rust-onig/rust-onig/pull/210>
+Zalo currently uses a fork of [rust-onig](https://github.com/rust-onig/rust-onig). Once <https://github.com/rust-onig/rust-onig/pull/210>
 or something similar is released on crates.io, I will switch back to the rust-onig crate.
 
 ## Usage
 
 ```rust
-use giallo::{HighlightOptions, HtmlRenderer, RenderOptions, Registry, ThemeVariant};
+use crate::{HighlightOptions, HtmlRenderer, RenderOptions, Registry, ThemeVariant};
 
 // Load the pre-built registry
 let mut registry = Registry::builtin()?;
@@ -48,7 +48,7 @@ See the `examples` directory for more examples.
 ## Renderers
 
 Highlighting some code is done the same way regardless of where/how you're planning to display the output.
-Giallo will give you back everything you need to implement your own renderer but also provides some (well one currently)
+Zalo will give you back everything you need to implement your own renderer but also provides some (well one currently)
 renderers.
 
 ### HTML renderer
@@ -56,18 +56,18 @@ renderers.
 This renderer outputs the text wrapped in a `<pre><code>...</code></pre>` with all the colours and attributes set correctly
 as well as escaping the HTML content.
 
-If you want to use line numbers, giallo will set some classes on `<span>` that you will need to target via CSS to have
-something looking good. The minimal CSS is exported as `GIALLO_CSS` by the crate.
+If you want to use line numbers, zalo will set some classes on `<span>` that you will need to target via CSS to have
+something looking good. The minimal CSS is exported as `ZALO_CSS` by the crate.
 
 This renderer also supports light/dark mode automatically if you highlight the text using 2 themes by using the [light-dark](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
 function in the `style` attribute.
 
-You can also have Giallo generates the CSS file for any theme and let the HTML renderer use the classes from it. This
+You can also have Zalo generates the CSS file for any theme and let the HTML renderer use the classes from it. This
 is useful for example if you want a light/dark theme switch where the above inline approach would not work.
 
 ## Built in
 
-If you use the `dump` feature, giallo provides the following 220+ grammars and ~60 themes.
+If you use the `dump` feature, zalo provides the following 220+ grammars and ~60 themes.
 You can use [Shiki playground](https://textmate-grammars-themes.netlify.app/) to see the various themes and languages in action or open VSCode.
 
 ### Grammars
@@ -382,10 +382,10 @@ Projects like [bat](https://github.com/sharkdp/bat) keep their own curated set o
 The Rust syntax for example is about 6 years old and does not know about async/await.
 VSCode is also a LOT more popular than Sublime these days.
 
-Giallo has been developed to replace syntect usage in Zola.
+Zalo has been developed to replace syntect usage in Zola.
 
 ### tree-sitter
 
 This repository initially started as a tree-sitter highlighter but the grammars were at the time very big (eg easily
-adding 100MB+ to a binary for ~50 languages, compared to <2MB for 4x more languages with Giallo) and queries were slow to load (see https://github.com/getzola/zola/issues/1787#issuecomment-1458569776)
+adding 100MB+ to a binary for ~50 languages, compared to <2MB for 4x more languages with Zalo) and queries were slow to load (see https://github.com/getzola/zola/issues/1787#issuecomment-1458569776)
 Both are kind of dealbreakers for something meant to be added to Zola.

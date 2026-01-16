@@ -1,7 +1,7 @@
-use giallo::{PLAIN_GRAMMAR_NAME, Registry};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
+use zalo::{PLAIN_GRAMMAR_NAME, Registry};
 
 #[derive(Debug, Deserialize, Serialize)]
 struct GrammarMetadata {
